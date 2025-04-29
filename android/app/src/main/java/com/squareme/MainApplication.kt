@@ -1,4 +1,4 @@
-package com.squareme
+package com.Squareme
 
 import android.app.Application
 import com.facebook.react.PackageList

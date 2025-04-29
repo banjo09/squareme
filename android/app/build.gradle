@@ -77,9 +77,9 @@ android {
     buildToolsVersion rootProject.ext.buildToolsVersion
     compileSdk rootProject.ext.compileSdkVersion
 
-    namespace "com.squareme"
+    namespace "com.Squareme"
     defaultConfig {
-        applicationId "com.squareme"
+        applicationId "com.Squareme"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
@@ -105,6 +105,14 @@ android {
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
         }
     }
+    // project.ext.vectoricons = [
+    //   iconFontNames: ['MaterialIcons.ttf', 'FontAwesome.ttf', 'Ionicons.ttf', 'Feather.ttf', 'AntDesign.ttf', 'Foundation.ttf', 'MaterialCommunityIcons.ttf'] 
+    // ]
+    // apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"
+    project.ext.vectoricons = [
+      iconFontNames: ['MaterialIcons.ttf', 'FontAwesome.ttf', 'Ionicons.ttf', 'Feather.ttf', 'AntDesign.ttf', 'Foundation.ttf', 'MaterialCommunityIcons.ttf'] 
+    ]
+    apply from: file("../../node_modules/react-native-vector-icons/fonts.gradle")
 }
 
 dependencies {
