@@ -1,0 +1,33 @@
+{
+  "migIndex": 1,
+  "data": [
+    {
+      "path": "src/assets/fonts/static/ClashGrotesk-Bold.ttf",
+      "sha1": "fe78215a45c36cf9fe2e4412da2880e0a4f813f3"
+    },
+    {
+      "path": "src/assets/fonts/static/ClashGrotesk-Extralight.ttf",
+      "sha1": "7c4d39b633a6bd00a997b06b8e5e3e281b1c2487"
+    },
+    {
+      "path": "src/assets/fonts/static/ClashGrotesk-Light.ttf",
+      "sha1": "a709ec15c4a53328040bfb5b73cab891a78cd438"
+    },
+    {
+      "path": "src/assets/fonts/static/ClashGrotesk-Medium.ttf",
+      "sha1": "e94895459d0dae15bc54529c6273d9f6996520ad"
+    },
+    {
+      "path": "src/assets/fonts/static/ClashGrotesk-Regular.ttf",
+      "sha1": "efed67a6286d21e8aa94a91704c6e61722c4ffed"
+    },
+    {
+      "path": "src/assets/fonts/static/ClashGrotesk-Semibold.ttf",
+      "sha1": "82e85dcdfee9058ec7158b722ff6ab9f6c6e22e8"
+    },
+    {
+      "path": "src/assets/fonts/static/ClashGrotesk-Variable.ttf",
+      "sha1": "b4bc066de0bbd47f84baf5f90d9739e13819c4ac"
+    }
+  ]
+}
