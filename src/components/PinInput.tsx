@@ -1,12 +1,14 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { View, Text, TextInput, StyleSheet, TouchableOpacity, Keyboard } from 'react-native';
+import React, { useState, useEffect, useRef, FC } from 'react';
+import { View, TextInput, StyleSheet, ViewStyle } from 'react-native';
+import { Colors } from '../utils/colors';
 
 interface PinInputProps {
   length: number;
   onComplete: (pin: string) => void;
+  inputStyle?: ViewStyle
 }
 
-const PinInput: React.FC<PinInputProps> = ({ length, onComplete }) => {
+const PinInput: FC<PinInputProps> = ({ length, onComplete, inputStyle }) => {
   const [pin, setPin] = useState<string[]>(Array(length).fill(''));
   const inputs = useRef<TextInput[]>([]);
 
@@ -40,7 +42,7 @@ const PinInput: React.FC<PinInputProps> = ({ length, onComplete }) => {
           ref={ref => {
             if (ref) inputs.current[index] = ref;
           }}
-          style={styles.input}
+          style={[styles.input, inputStyle]}
           keyboardType="number-pad"
           maxLength={1}
           value={pin[index]}
@@ -50,7 +52,7 @@ const PinInput: React.FC<PinInputProps> = ({ length, onComplete }) => {
               handleBackspace(index);
             }
           }}
-          secureTextEntry
+        // secureTextEntry
         />
       ))}
     </View>
@@ -60,18 +62,17 @@ const PinInput: React.FC<PinInputProps> = ({ length, onComplete }) => {
 const styles = StyleSheet.create({
   container: {
     flexDirection: 'row',
-    justifyContent: 'center',
-    marginVertical: 30,
+    marginTop: 20
   },
   input: {
-    width: 50,
-    height: 50,
-    borderWidth: 1,
-    borderColor: '#ccc',
+    width: 53,
+    height: 53,
+    backgroundColor: Colors.background,
     borderRadius: 8,
-    marginHorizontal: 5,
+    marginRight: 10,
     textAlign: 'center',
     fontSize: 20,
+    fontFamily: 'ClashGrotesk-Regular',
     fontWeight: 'bold',
   },
 });

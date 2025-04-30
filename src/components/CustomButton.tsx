@@ -2,7 +2,6 @@ import React, { FC } from 'react'
 import {
   StyleProp,
   StyleSheet,
-  Text,
   TextStyle,
   TouchableOpacity,
   ViewStyle,
@@ -11,15 +10,49 @@ import {
   View
 } from 'react-native'
 import { Colors } from '../utils/colors'
+import { Text } from '../theme/CustomText';
 
 type ButtonVariant = 'primary' | 'secondary' | 'danger' | 'default';
 type ButtonMode = 'outline' | 'filled';
+
+const getVariantStyles = (variant: ButtonVariant, mode: ButtonMode, text?: boolean) => {
+  switch (variant) {
+    case 'primary':
+      return {
+        // borderColor: Colors.primary,
+        borderColor: text ? undefined : Colors.primary,
+        textColor: mode === 'filled' ? 'white' : Colors.primary,
+        backgroundColor: mode === 'filled' ? Colors.primary : 'transparent',
+      };
+    case 'secondary':
+      return {
+        // borderColor: 'gray',
+        borderColor: text ? undefined : 'gray',
+        textColor: mode === 'filled' ? 'white' : 'gray',
+        backgroundColor: mode === 'filled' ? 'gray' : 'transparent',
+      };
+    case 'danger':
+      return {
+        // borderColor: 'red',
+        borderColor: text ? undefined : 'red',
+        textColor: mode === 'filled' ? 'white' : 'red',
+        backgroundColor: mode === 'filled' ? 'red' : 'transparent',
+      };
+    default:
+      return {
+        borderColor: text ? undefined : Colors.accent,
+        textColor: mode === 'filled' ? 'white' : Colors.accent,
+        backgroundColor: mode === 'filled' ? Colors.accent : 'transparent',
+      };
+  }
+};
 
 type CustomButtonProps = {
   title: string;
   onPress: (event: GestureResponderEvent) => void;
   variant?: ButtonVariant;
   mode?: ButtonMode;
+  text?: boolean;
   buttonStyle?: StyleProp<ViewStyle>;
   textStyle?: StyleProp<TextStyle>;
   loading?: boolean;
@@ -27,35 +60,7 @@ type CustomButtonProps = {
   spinnerColor?: string;
   leftIcon?: React.ReactNode;
   rightIcon?: React.ReactNode;
-};
-
-const getVariantStyles = (variant: ButtonVariant, mode: ButtonMode) => {
-  switch (variant) {
-    case 'primary':
-      return {
-        borderColor: Colors.primary,
-        textColor: mode === 'filled' ? 'white' : Colors.primary,
-        backgroundColor: mode === 'filled' ? Colors.primary : 'transparent',
-      };
-    case 'secondary':
-      return {
-        borderColor: 'gray',
-        textColor: mode === 'filled' ? 'white' : 'gray',
-        backgroundColor: mode === 'filled' ? 'gray' : 'transparent',
-      };
-    case 'danger':
-      return {
-        borderColor: 'red',
-        textColor: mode === 'filled' ? 'white' : 'red',
-        backgroundColor: mode === 'filled' ? 'red' : 'transparent',
-      };
-    default:
-      return {
-        borderColor: Colors.accent,
-        textColor: mode === 'filled' ? 'white' : Colors.accent,
-        backgroundColor: mode === 'filled' ? Colors.accent : 'transparent',
-      };
-  }
+  noPadding?: boolean
 };
 
 export const CustomButton: FC<CustomButtonProps> = ({
@@ -71,8 +76,10 @@ export const CustomButton: FC<CustomButtonProps> = ({
   spinnerColor = Colors.white,
   leftIcon,
   rightIcon,
+  text,
+  noPadding,
 }) => {
-  const variantStyles = getVariantStyles(variant, mode);
+  const variantStyles = getVariantStyles(variant, mode, text);
 
   return (
     <TouchableOpacity
@@ -82,6 +89,8 @@ export const CustomButton: FC<CustomButtonProps> = ({
         {
           borderColor: variantStyles.borderColor,
           backgroundColor: variantStyles.backgroundColor,
+          borderWidth: text ? 0 : 1,
+          padding: text ? 0 : 15,
         },
         disabled && styles.disabledButton,
         buttonStyle,
@@ -97,7 +106,7 @@ export const CustomButton: FC<CustomButtonProps> = ({
           <Text
             style={[
               styles.secondaryButtonText,
-              { color: variantStyles.textColor },
+              { color: variantStyles.textColor, },
               disabled && styles.disabledText,
               textStyle,
             ]}
