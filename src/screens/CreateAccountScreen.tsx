@@ -37,12 +37,12 @@ const CreateAccountScreen = () => {
     />
   );
 
-  const handleLogout = () => {
-    console.log('Logging out');
+  const handleTermsConditionsClick = () => {
+    console.log('TermsConditions')
   };
 
   const handleLogin = () => {
-    console.log('Logging in with PIN:');
+    navigation.navigate('Login')
   };
 
   return (
@@ -101,7 +101,7 @@ const CreateAccountScreen = () => {
             </Text>
             <CustomButton
               title="Terms & Conditions"
-              onPress={handleLogout}
+              onPress={handleTermsConditionsClick}
               variant='primary'
               text
               buttonStyle={styles.logoutButton}

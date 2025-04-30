@@ -27,16 +27,12 @@ const EmailScreen = () => {
 
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
 
-  const handleBvnClick = () => {
-    console.log('Click');
-  };
-
   const handleSubmit = () => {
     navigation.navigate('VerifyEmail')
   };
 
-  const onHideText = () => {
-    console.log('Click');
+  const handleBackClick = () => {
+    navigation.goBack()
   };
 
   return (
@@ -50,6 +46,7 @@ const EmailScreen = () => {
             name="keyboard-backspace"
             size={25}
             color={Colors.primary}
+            onPress={handleBackClick}
           />
           <Text style={styles.title}>Enter your email address</Text>
         </View>

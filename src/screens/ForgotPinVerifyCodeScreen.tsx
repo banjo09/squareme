@@ -22,7 +22,6 @@ const ForgotPinVerifyCodeScreen = () => {
 
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
 
-
   useEffect(() => {
     const countdown = setInterval(() => {
       setTimer((prevTimer) => {
@@ -56,7 +55,10 @@ const ForgotPinVerifyCodeScreen = () => {
         },
       },
     });
+  };
 
+  const handleBackClick = () => {
+    navigation.goBack()
   };
 
   const handleResendCode = () => {
@@ -81,6 +83,7 @@ const ForgotPinVerifyCodeScreen = () => {
             name="keyboard-backspace"
             size={25}
             color={Colors.primary}
+            onPress={handleBackClick}
           />
           <Text style={styles.title}>Verify your phone number</Text>
         </View>

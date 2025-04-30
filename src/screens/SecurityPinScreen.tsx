@@ -29,12 +29,6 @@ type SecurityPinParams = {
     description: string;
     label: string
   }
-  // description: string;
-  // nextAction?: {
-  //   label: string;
-  //   screen: keyof RootStackParamList;
-  //   params?: object;
-  // };
 };
 
 const SecurityPinScreen = () => {
@@ -48,13 +42,16 @@ const SecurityPinScreen = () => {
     label,
     screen,
     confirmSecurityScreenParams,
-    // nextAction,
   } = route.params as unknown as SecurityPinParams;
 
   const handleSubmit = () => {
     if (screen) {
       navigation.navigate('ConfirmSecurityPin', { screen, confirmSecurityScreenParams } as never);
     }
+  };
+
+  const handleBackClick = () => {
+    navigation.goBack()
   };
 
   useEffect(() => {
@@ -89,6 +86,7 @@ const SecurityPinScreen = () => {
             name="keyboard-backspace"
             size={25}
             color={Colors.primary}
+            onPress={handleBackClick}
           />
           <Text style={styles.title}>{label}</Text>
           {/* <Text style={styles.title}>Set your Security PIN</Text> */}

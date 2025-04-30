@@ -62,7 +62,10 @@ const VerifyCodeScreen = () => {
         },
       },
     });
+  };
 
+  const handleBackClick = () => {
+    navigation.goBack()
   };
 
   const handleResendCode = () => {
@@ -87,6 +90,7 @@ const VerifyCodeScreen = () => {
             name="keyboard-backspace"
             size={25}
             color={Colors.primary}
+            onPress={handleBackClick}
           />
           <Text style={styles.title}>Verify your phone number</Text>
         </View>

@@ -47,15 +47,6 @@ const ConfirmSecurityPinScreen = () => {
 
   const handleSubmit = () => {
     if (screen) {
-      // navigation.navigate('Success', {
-      //   message: 'PIN Created Successfully!',
-      //   description: 'You have successfully created your security pin.',
-      //   nextAction: {
-      //     label: 'Continue',
-      //     screen: screen,
-      //     params: {},
-      //   },
-      // });
       navigation.navigate('Success', {
         message,
         description,
@@ -68,18 +59,9 @@ const ConfirmSecurityPinScreen = () => {
     }
   };
 
-  // const handleSubmit = () => {
-  //   console.log('Logging in with PIN:', pin);
-  //   navigation.navigate('Success', {
-  //     message: 'PIN Created Successfully!',
-  //     description: 'You have successfully created your security pin.',
-  //     nextAction: {
-  //       label: 'Continue',
-  //       screen: 'BVN',
-  //       params: {},
-  //     },
-  //   });
-  // };
+  const handleBackClick = () => {
+    navigation.goBack()
+  };
 
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener(
@@ -113,6 +95,7 @@ const ConfirmSecurityPinScreen = () => {
             name="keyboard-backspace"
             size={25}
             color={Colors.primary}
+            onPress={handleBackClick}
           />
           <Text style={styles.title}>Confirm  your Security PIN</Text>
         </View>

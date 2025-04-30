@@ -14,10 +14,11 @@ import PinInput from '../components/PinInput';
 import Feather from 'react-native-vector-icons/Feather';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { Colors } from '../utils/colors';
-import { useNavigation } from '@react-navigation/native';
-import { LoginScreenNavigationProp } from '../types/navigation';
+import { CommonActions, useNavigation } from '@react-navigation/native';
+import { LoginScreenNavigationProp, RootStackParamList } from '../types/navigation';
 import { Text } from '../theme/CustomText';
 import CustomButton from '../components/CustomButton';
+import { StackNavigationProp } from '@react-navigation/stack';
 
 
 const { width, height } = Dimensions.get('window');
@@ -25,6 +26,8 @@ const { width, height } = Dimensions.get('window');
 const LoginScreen = () => {
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
   const [pin, setPin] = useState('');
+
+  const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
 
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener(
@@ -49,16 +52,22 @@ const LoginScreen = () => {
 
   const handleLogin = () => {
     console.log('Logging in with PIN:', pin);
+    navigation.dispatch(
+      CommonActions.reset({
+        index: 0,
+        routes: [{ name: 'MainApp' }],
+      })
+    );
   };
 
   const handleUseBiometrics = () => { };
 
   const handleLogout = () => {
-    console.log('Logging out');
+    navigation.navigate('Splash')
   };
 
   const handleForgotPin = () => {
-    console.log('Forgot PIN');
+    navigation.navigate('ForgotPassword')
   };
 
   return (
