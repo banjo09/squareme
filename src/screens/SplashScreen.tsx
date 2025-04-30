@@ -86,7 +86,7 @@ const SplashScreen = () => {
   };
 
   const onCreateAccountPress = () => {
-    // Handle create account button press
+    navigation.navigate('CreateAccount');
   }
   const onLoginPress = () => {
     navigation.navigate('Login');
@@ -188,7 +188,10 @@ const styles = StyleSheet.create({
   },
   marketingHeaderText: {
     fontSize: 22,
-    fontWeight: 700,
+    // fontWeight: 700,
+    fontFamily: 'ClashGrotesk-Semibold',
+    // fontFamily: 'ClashGrotesk-Variable',
+    // fontFamily: 'ClashGrotesk-Medium',
     lineHeight: 30,
     width: '85%',
     textAlign: 'center',
