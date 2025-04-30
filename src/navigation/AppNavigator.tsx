@@ -16,6 +16,7 @@ import EmailScreen from '../screens/EmailScreen';
 import VerifyEmailScreen from '../screens/VerifyEmailScreen';
 import ForgotPasswordScreen from '../screens/ForgotPasswordScreen';
 import ForgotPinVerifyCodeScreen from '../screens/ForgotPinVerifyCodeScreen';
+import MainTabNavigator from './MainTabNavigator';
 
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -119,11 +120,11 @@ const AppNavigator = () => {
         component={SecurityPinScreen}
         options={{ headerShown: false }}
       /> */}
-      {/* <Stack.Screen
+      <Stack.Screen
         name="MainApp"
         component={MainTabNavigator}
         options={{ headerShown: false }}
-      /> */}
+      />
     </Stack.Navigator>
   );
 };

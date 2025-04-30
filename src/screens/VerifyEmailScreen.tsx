@@ -49,7 +49,10 @@ const VerifyEmailScreen = () => {
         params: {},
       },
     });
+  };
 
+  const handleBackClick = () => {
+    navigation.goBack()
   };
 
   const handleResendCode = () => {
@@ -74,6 +77,7 @@ const VerifyEmailScreen = () => {
             name="keyboard-backspace"
             size={25}
             color={Colors.primary}
+            onPress={handleBackClick}
           />
           <Text style={styles.title}>Verify your email address</Text>
         </View>

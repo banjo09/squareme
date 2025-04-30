@@ -32,6 +32,8 @@ const bvnPoints = [
 ];
 
 const BVNScreen = () => {
+  const [show, setShow] = useState(true);
+
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
 
   const handleBvnClick = () => {
@@ -42,8 +44,12 @@ const BVNScreen = () => {
     navigation.navigate('BVNConfirmation')
   };
 
+  const handleBackClick = () => {
+    navigation.goBack()
+  };
+
   const onHideText = () => {
-    console.log('Click');
+    setShow((show) => !show)
   };
 
   return (
@@ -57,6 +63,7 @@ const BVNScreen = () => {
             name="keyboard-backspace"
             size={25}
             color={Colors.primary}
+            onPress={handleBackClick}
           />
           <Text style={styles.title}>Provide your BVN</Text>
         </View>
@@ -89,10 +96,14 @@ const BVNScreen = () => {
               Why we need your BVN?
             </Text>
             <Pressable onPress={onHideText} style={styles.arrowStyle}>
-              <MaterialIcons name="keyboard-arrow-up" size={25} color={Colors.taintPurple} />
+              <MaterialIcons
+                name="keyboard-arrow-up"
+                size={25}
+                color={Colors.taintPurple}
+              />
             </Pressable>
           </View>
-          {bvnPoints.map((point, index) => (
+          {show && bvnPoints.map((point, index) => (
             <View key={index} style={styles.listItem}>
               <Text style={styles.bullet}>{'\u2022'}</Text>
               <Text style={styles.text}>{point}</Text>
