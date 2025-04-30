@@ -14,18 +14,48 @@ import PinInput from '../components/PinInput';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { Colors } from '../utils/colors';
-import { useNavigation } from '@react-navigation/native';
-import { LoginScreenNavigationProp, RootStackParamList } from '../types/navigation';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import { RootStackParamList, SecurityPinRouteProp } from '../types/navigation';
 import { Text } from '../theme/CustomText';
 import CustomButton from '../components/CustomButton';
 import { StackNavigationProp } from '@react-navigation/stack';
 
+
+type SecurityPinParams = {
+  label: string;
+  screen: keyof RootStackParamList;
+  confirmSecurityScreenParams: {
+    message: string;
+    description: string;
+    label: string
+  }
+  // description: string;
+  // nextAction?: {
+  //   label: string;
+  //   screen: keyof RootStackParamList;
+  //   params?: object;
+  // };
+};
 
 const SecurityPinScreen = () => {
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
   const [pin, setPin] = useState('');
 
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
+  const route = useRoute<SecurityPinRouteProp>();
+
+  const {
+    label,
+    screen,
+    confirmSecurityScreenParams,
+    // nextAction,
+  } = route.params as unknown as SecurityPinParams;
+
+  const handleSubmit = () => {
+    if (screen) {
+      navigation.navigate('ConfirmSecurityPin', { screen, confirmSecurityScreenParams } as never);
+    }
+  };
 
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener(
@@ -48,11 +78,6 @@ const SecurityPinScreen = () => {
     console.log('PIN entered:', enteredPin);
   };
 
-  const handleSubmit = () => {
-    console.log('Logging in with PIN:', pin);
-    navigation.navigate('ConfirmSecurityPin')
-  };
-
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -65,7 +90,8 @@ const SecurityPinScreen = () => {
             size={25}
             color={Colors.primary}
           />
-          <Text style={styles.title}>Set your Security PIN</Text>
+          <Text style={styles.title}>{label}</Text>
+          {/* <Text style={styles.title}>Set your Security PIN</Text> */}
         </View>
 
         <Text style={styles.instructionText}>

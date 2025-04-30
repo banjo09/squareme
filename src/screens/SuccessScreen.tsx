@@ -40,11 +40,6 @@ const SuccessScreen = () => {
     }
   };
 
-  const handleContinue = () => {
-    navigation.navigate('SecurityPin');
-
-  };
-
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
@@ -70,7 +65,6 @@ const SuccessScreen = () => {
           </View>
 
           {nextAction && (
-            // <Button title={nextAction.label} onPress={handleNext} />
             <CustomButton
               title={nextAction.label}
               onPress={handleNext}

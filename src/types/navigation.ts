@@ -22,6 +22,12 @@ export type RootStackParamList = {
   SecurityPin: undefined;
   ConfirmSecurityPin: undefined;
   BVN: undefined;
+  BVNConfirmation: undefined;
+  Email: undefined;
+  VerifyEmail: undefined;
+  Dashboard: undefined;
+  ForgotPassword: undefined;
+  ForgotPinVerifyCode: undefined;
 };
 
 export type RootNavigationProp = StackNavigationProp<
@@ -76,6 +82,16 @@ export type ConfirmSecurityPinRouteProp = RouteProp<
 export type BVNRouteProp = RouteProp<RootStackParamList, 'BVN'>;
 
 export type BVNNavigationProp = StackNavigationProp<RootStackParamList, 'BVN'>;
+
+export type BVNConfirmationNavigationProp = StackNavigationProp<
+  RootStackParamList,
+  'BVNConfirmation'
+>;
+
+// export type EmailNavigationProp = StackNavigationProp<
+//   RootStackParamList,
+//   'Email'
+// >;
 
 export type LoginScreenNavigationProp = StackNavigationProp<
   RootStackParamList,
