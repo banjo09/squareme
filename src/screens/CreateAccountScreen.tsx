@@ -73,7 +73,7 @@ const CreateAccountScreen = () => {
             code to verify your phone number.
           </Text>
 
-          <View style={styles.formContainer}>
+          <View>
             <Text style={styles.label}>Phone Number</Text>
             <CustomTextInput
               value={phoneNumber}
@@ -167,16 +167,13 @@ const styles = StyleSheet.create({
   },
   subtitle: {
     fontSize: 20,
-    fontWeight: '500',
+    fontFamily: 'ClashGrotesk-Medium',
     marginBottom: 10,
   },
   instruction: {
     fontSize: 15,
     marginBottom: 32,
     lineHeight: 24,
-  },
-  formContainer: {
-    // marginBottom: 24,
   },
   keyboardActiveView: {
     flexDirection: 'row',

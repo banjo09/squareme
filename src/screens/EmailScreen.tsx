@@ -8,9 +8,6 @@ import {
   KeyboardAvoidingView,
   Platform,
   Dimensions,
-  TouchableWithoutFeedback,
-  TouchableNativeFeedback,
-  TouchableHighlight,
   Pressable,
 } from 'react-native';
 import PinInput from '../components/PinInput';
@@ -23,15 +20,11 @@ import { LoginScreenNavigationProp, RootStackParamList } from '../types/navigati
 import { Text } from '../theme/CustomText';
 import CustomButton from '../components/CustomButton';
 import { StackNavigationProp } from '@react-navigation/stack';
+import CustomTextInput from '../components/CustomTextInput';
 
-const bvnPoints = [
-  'We request for your BVN to verify your identity and confirm that the account you provided is yours.',
-  'Only access to your full name, phone number and date of birth is granted.',
-  'Your BVN does not grant access to bank accounts or transaction details.',
-  'Rest assured, your data is securely managed by us.',
-];
+const EmailScreen = () => {
+  const [referralCode, setReferralCode] = useState('');
 
-const BVNScreen = () => {
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
 
   const handleBvnClick = () => {
@@ -39,7 +32,7 @@ const BVNScreen = () => {
   };
 
   const handleSubmit = () => {
-    navigation.navigate('BVNConfirmation')
+    navigation.navigate('VerifyEmail')
   };
 
   const onHideText = () => {
@@ -58,50 +51,24 @@ const BVNScreen = () => {
             size={25}
             color={Colors.primary}
           />
-          <Text style={styles.title}>Provide your BVN</Text>
+          <Text style={styles.title}>Enter your email address</Text>
         </View>
 
         <Text style={styles.instructionText}>
-          Kindly provide your Bank Verification Number
+          Please enter your email address
         </Text>
 
         <Text style={styles.bvnText}>
-          BVN
+          Email address
         </Text>
-
-        <TouchableOpacity
-          style={styles.bvnButton}
-          onPress={handleBvnClick}
-        >
-          <Feather name="plus" size={20} color={Colors.grey} />
-          <Text style={styles.addText}>
-            Click to add
-          </Text>
-        </TouchableOpacity>
-        <View style={styles.infoButton}>
-          <View style={styles.infoHeader}>
-            <Ionicons
-              name="shield-checkmark-outline"
-              size={20}
-              color={Colors.taintPurple}
-            />
-            <Text style={styles.infoTopic}>
-              Why we need your BVN?
-            </Text>
-            <Pressable onPress={onHideText} style={styles.arrowStyle}>
-              <MaterialIcons name="keyboard-arrow-up" size={25} color={Colors.taintPurple} />
-            </Pressable>
-          </View>
-          {bvnPoints.map((point, index) => (
-            <View key={index} style={styles.listItem}>
-              <Text style={styles.bullet}>{'\u2022'}</Text>
-              <Text style={styles.text}>{point}</Text>
-            </View>
-          ))}
-        </View>
+        <CustomTextInput
+          value={referralCode}
+          onChangeText={setReferralCode}
+        // containerStyle={styles.inputContainer}
+        />
 
         <CustomButton
-          title="Submit"
+          title="Continue"
           onPress={handleSubmit}
           mode='filled'
           buttonStyle={styles.submitButton}
@@ -198,4 +165,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default BVNScreen;
+export default EmailScreen;

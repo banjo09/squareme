@@ -11,6 +11,11 @@ import SuccessScreen from '../screens/SuccessScreen';
 import SecurityPinScreen from '../screens/SecurityPinScreen';
 import ConfirmSecurityPinScreen from '../screens/ConfirmSecurityPinScreen';
 import BVNScreen from '../screens/BVNScreen';
+import BVNConfirmationScreen from '../screens/BVNConfirmationScreen';
+import EmailScreen from '../screens/EmailScreen';
+import VerifyEmailScreen from '../screens/VerifyEmailScreen';
+import ForgotPasswordScreen from '../screens/ForgotPasswordScreen';
+import ForgotPinVerifyCodeScreen from '../screens/ForgotPinVerifyCodeScreen';
 
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -69,6 +74,41 @@ const AppNavigator = () => {
         component={BVNScreen}
         options={{ headerShown: false }}
       />
+      <Stack.Screen
+        name="BVNConfirmation"
+        component={BVNConfirmationScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Email"
+        component={EmailScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="VerifyEmail"
+        component={VerifyEmailScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="ForgotPassword"
+        component={ForgotPasswordScreen}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="ForgotPinVerifyCode"
+        component={ForgotPinVerifyCodeScreen}
+        options={{ headerShown: false }}
+      />
+      {/* <Stack.Screen
+        name="SecurityPin"
+        component={SecurityPinScreen}
+        options={{ headerShown: false }}
+      /> */}
+      {/* <Stack.Screen
+        name="SecurityPin"
+        component={SecurityPinScreen}
+        options={{ headerShown: false }}
+      /> */}
       {/* <Stack.Screen
         name="SecurityPin"
         component={SecurityPinScreen}

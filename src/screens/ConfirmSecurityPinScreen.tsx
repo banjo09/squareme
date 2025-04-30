@@ -14,18 +14,72 @@ import PinInput from '../components/PinInput';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { Colors } from '../utils/colors';
-import { useNavigation } from '@react-navigation/native';
-import { LoginScreenNavigationProp, RootStackParamList } from '../types/navigation';
+import { useNavigation, useRoute } from '@react-navigation/native';
+import { ConfirmSecurityPinRouteProp, LoginScreenNavigationProp, RootStackParamList } from '../types/navigation';
 import { Text } from '../theme/CustomText';
 import CustomButton from '../components/CustomButton';
 import { StackNavigationProp } from '@react-navigation/stack';
 
+type ConfirmSecurityPinParams = {
+  screen: keyof RootStackParamList;
+  confirmSecurityScreenParams: {
+    message: string;
+    description: string;
+    label: string
+  }
+};
 
 const ConfirmSecurityPinScreen = () => {
   const [isKeyboardVisible, setKeyboardVisible] = useState(false);
   const [pin, setPin] = useState('');
 
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
+  const route = useRoute<ConfirmSecurityPinRouteProp>();
+
+  const {
+    screen,
+    confirmSecurityScreenParams: {
+      message,
+      description,
+      label
+    }
+  } = route.params as unknown as ConfirmSecurityPinParams;
+
+  const handleSubmit = () => {
+    if (screen) {
+      // navigation.navigate('Success', {
+      //   message: 'PIN Created Successfully!',
+      //   description: 'You have successfully created your security pin.',
+      //   nextAction: {
+      //     label: 'Continue',
+      //     screen: screen,
+      //     params: {},
+      //   },
+      // });
+      navigation.navigate('Success', {
+        message,
+        description,
+        nextAction: {
+          label,
+          screen: screen,
+          params: {},
+        },
+      });
+    }
+  };
+
+  // const handleSubmit = () => {
+  //   console.log('Logging in with PIN:', pin);
+  //   navigation.navigate('Success', {
+  //     message: 'PIN Created Successfully!',
+  //     description: 'You have successfully created your security pin.',
+  //     nextAction: {
+  //       label: 'Continue',
+  //       screen: 'BVN',
+  //       params: {},
+  //     },
+  //   });
+  // };
 
   useEffect(() => {
     const keyboardDidShowListener = Keyboard.addListener(
@@ -46,19 +100,6 @@ const ConfirmSecurityPinScreen = () => {
   const handlePinComplete = (enteredPin: string) => {
     setPin(enteredPin);
     console.log('PIN entered:', enteredPin);
-  };
-
-  const handleSubmit = () => {
-    console.log('Logging in with PIN:', pin);
-    navigation.navigate('Success', {
-      message: 'PIN Created Successfully!',
-      description: 'You have successfully created your security pin.',
-      nextAction: {
-        label: 'Continue',
-        screen: 'BVN',
-        params: {},
-      },
-    });
   };
 
   return (
