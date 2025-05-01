@@ -136,7 +136,7 @@ const styles = StyleSheet.create({
     borderRadius: 8
   },
   infoTopic: {
-    color: Colors.taintPurple,
+    color: Colors.purple,
     marginLeft: 10,
     fontFamily: 'ClashGrotesk-Medium'
   },
