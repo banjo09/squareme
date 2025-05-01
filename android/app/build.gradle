@@ -110,7 +110,7 @@ android {
     // ]
     // apply from: "../../node_modules/react-native-vector-icons/fonts.gradle"
     project.ext.vectoricons = [
-      iconFontNames: ['MaterialIcons.ttf', 'FontAwesome.ttf', 'Ionicons.ttf', 'Feather.ttf', 'AntDesign.ttf', 'Foundation.ttf', 'MaterialCommunityIcons.ttf'] 
+      iconFontNames: ['MaterialIcons.ttf', 'FontAwesome.ttf', 'Ionicons.ttf', 'Feather.ttf', 'AntDesign.ttf', 'Foundation.ttf', 'MaterialCommunityIcons.ttf', 'FontAwesome6.ttf'] 
     ]
     apply from: file("../../node_modules/react-native-vector-icons/fonts.gradle")
 }
