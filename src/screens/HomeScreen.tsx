@@ -10,6 +10,7 @@ import {
   TouchableOpacity,
   Animated
 } from 'react-native';
+import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
@@ -18,12 +19,16 @@ import LinearGradient from 'react-native-linear-gradient';
 import { Colors } from '../utils/colors';
 import { Text } from '../theme/CustomText';
 import AnimatedBox from '../components/AnimatedBox';
+import BillPaymentsModal from '../components/Home/BillPaymentsModal';
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { HomeStackParamList } from '../types/home.navigation';
 
 
 const quickActions = [
   { id: '1', icon: require('../assets/fund.png'), name: 'Fund Wallet' },
   { id: '2', icon: require('../assets/wallet-minus.png'), name: 'Withdraw' },
-  { id: '3', icon: require('../assets/receipt.png'), name: 'Pay Ellis' },
+  { id: '3', icon: require('../assets/receipt.png'), name: 'Pay Bills' },
   { id: '4', icon: require('../assets/card.png'), name: 'Cards' },
   { id: '5', icon: require('../assets/strongbox.png'), name: 'Squareme Pot' },
   { id: '6', icon: require('../assets/mobile.png'), name: 'Airtime' },
@@ -70,9 +75,14 @@ const HomeScreen = () => {
   const [showFullBalance, setShowFullBalance] = useState(false);
   const [showAllQuickActions, setShowAllQuickActions] = useState(false);
   const [showAllTransactions, setShowAllTransactions] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
+
 
   const displayedQuickActions = showAllQuickActions ? quickActions : quickActions.slice(0, 5);
   const displayedTransactions = showAllTransactions ? transactions : transactions.slice(0, 1);
+
+  const navigation = useNavigation<StackNavigationProp<HomeStackParamList>>();
+  const tabBarHeight = useBottomTabBarHeight();
 
   return (
     <ScrollView style={styles.container}>
@@ -99,16 +109,25 @@ const HomeScreen = () => {
             </View>
           </View>
           <View style={styles.headerIcons}>
-            <TouchableOpacity style={styles.iconContainer}>
+            <TouchableOpacity
+              style={styles.iconContainer}
+              onPress={() => setModalVisible(true)}
+            >
               <Ionicons name="gift-outline" size={18} color="#fff" />
               <View style={styles.notificationBadge} />
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.iconContainer}>
+            <TouchableOpacity
+              style={styles.iconContainer}
+              onPress={() => setModalVisible(true)}
+            >
               <Ionicons name="add" size={20} color="#fff" />
             </TouchableOpacity>
 
-            <TouchableOpacity style={[styles.iconContainer, styles.notificationIcon]}>
+            <TouchableOpacity
+              style={[styles.iconContainer, styles.notificationIcon]}
+              onPress={() => navigation.navigate('Notification')}
+            >
               <Ionicons
                 name="notifications-outline"
                 size={24}
@@ -257,6 +276,12 @@ const HomeScreen = () => {
           showsHorizontalScrollIndicator={false}
         />
       </View>
+
+      <BillPaymentsModal
+        visible={modalVisible}
+        onClose={() => setModalVisible(false)}
+        tabBarHeight={tabBarHeight}
+      />
     </ScrollView>
   );
 };
