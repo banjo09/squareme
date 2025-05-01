@@ -1,11 +1,14 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import Feather from 'react-native-vector-icons/Feather';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import HomeScreen from '../screens/HomeScreen';
 import { Colors } from '../utils/colors';
 import PaymentsScreen from '../screens/PaymentsScreen';
+import HomeStackNavigator from './HomeStackNavigator';
+import MoreScreen from '../screens/MoreScreen';
+import { View } from 'react-native';
+import PaymentStackNavigator from './PaymentStackNavigator';
 
 const Tab = createBottomTabNavigator();
 
@@ -20,19 +23,29 @@ const MainTabNavigator = () => {
             iconName = 'home-variant';
             return <MaterialCommunityIcons name={iconName} size={size} color={color} />;
           } else if (route.name === 'Payments') {
-            return <FontAwesome6 name="qrcode" size={size} color={color} />;
+            iconName = 'money';
+            return <FontAwesome name={iconName} size={size} color={color} />;
+          } else if (route.name === 'More') {
+            iconName = 'more-horizontal';
+            return <View
+              style={{
+                borderColor: color,
+                borderWidth: 2,
+                borderRadius: 5,
+              }}
+            >
+              <Feather name={iconName} size={size - 10} color={color} />
+            </View>;
           }
-          // else if (route.name === 'Wallet') {
-          //   iconName = 'account-balance-wallet';
-          //   return <MaterialIcons name={iconName} size={size} color={color} />;
-          // } else if (route.name === 'Profile') {
+          // else if (route.name === 'Profile') {
           //   iconName = 'person';
           //   return <MaterialIcons name={iconName} size={size} color={color} />;
           // }
           // active color: #292D32
         },
-        tabBarActiveTintColor: Colors.activeTint,
-        tabBarInactiveTintColor: '#999',
+        tabBarActiveTintColor: Colors.accent,
+        tabBarInactiveTintColor: Colors.grey,
+        // tabBarInactiveTintColor: '#000A4A',
         headerShown: false,
         tabBarStyle: {
           borderTopWidth: 1,
@@ -44,9 +57,9 @@ const MainTabNavigator = () => {
         },
       })}
     >
-      <Tab.Screen name="Home" component={HomeScreen} />
-      <Tab.Screen name="Payments" component={PaymentsScreen} />
-      {/* <Tab.Screen name="Wallet" component={WalletScreen} /> */}
+      <Tab.Screen name="Home" component={HomeStackNavigator} />
+      <Tab.Screen name="Payments" component={PaymentStackNavigator} />
+      <Tab.Screen name="More" component={MoreScreen} />
       {/* <Tab.Screen name="Profile" component={ProfileScreen} /> */}
     </Tab.Navigator>
   );
