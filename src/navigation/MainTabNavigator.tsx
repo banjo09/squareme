@@ -1,10 +1,11 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import FontAwesome6 from 'react-native-vector-icons/FontAwesome6';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import HomeScreen from '../screens/HomeScreen';
 import { Colors } from '../utils/colors';
+import PaymentsScreen from '../screens/PaymentsScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -18,10 +19,10 @@ const MainTabNavigator = () => {
           if (route.name === 'Home') {
             iconName = 'home-variant';
             return <MaterialCommunityIcons name={iconName} size={size} color={color} />;
+          } else if (route.name === 'Payments') {
+            return <FontAwesome6 name="qrcode" size={size} color={color} />;
           }
-          // else if (route.name === 'Scan') {
-          //   return <FontAwesome name="qrcode" size={size} color={color} />;
-          // } else if (route.name === 'Wallet') {
+          // else if (route.name === 'Wallet') {
           //   iconName = 'account-balance-wallet';
           //   return <MaterialIcons name={iconName} size={size} color={color} />;
           // } else if (route.name === 'Profile') {
@@ -44,9 +45,9 @@ const MainTabNavigator = () => {
       })}
     >
       <Tab.Screen name="Home" component={HomeScreen} />
-      {/* <Tab.Screen name="Scan" component={ScanScreen} />
-      <Tab.Screen name="Wallet" component={WalletScreen} />
-      <Tab.Screen name="Profile" component={ProfileScreen} /> */}
+      <Tab.Screen name="Payments" component={PaymentsScreen} />
+      {/* <Tab.Screen name="Wallet" component={WalletScreen} /> */}
+      {/* <Tab.Screen name="Profile" component={ProfileScreen} /> */}
     </Tab.Navigator>
   );
 };

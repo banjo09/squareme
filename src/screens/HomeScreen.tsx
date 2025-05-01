@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import {
   View,
   Image,
@@ -7,7 +7,8 @@ import {
   StyleSheet,
   FlatList,
   Dimensions,
-  TouchableOpacity
+  TouchableOpacity,
+  Animated
 } from 'react-native';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -16,18 +17,19 @@ import Feather from 'react-native-vector-icons/Feather';
 import LinearGradient from 'react-native-linear-gradient';
 import { Colors } from '../utils/colors';
 import { Text } from '../theme/CustomText';
+import AnimatedBox from '../components/AnimatedBox';
 
 
 const quickActions = [
-  { id: '1', icon: 'wallet', name: 'Fund Wallet' },
-  { id: '2', icon: 'money-check', name: 'Withdraw' },
-  { id: '3', icon: 'user', name: 'Pay Ellis' },
-  { id: '4', icon: 'credit-card', name: 'Cards' },
-  { id: '5', icon: 'piggy-bank', name: 'Squareme Pot' },
-  { id: '6', icon: 'bus', name: 'Airtime' },
-  { id: '7', icon: 'wifi', name: 'Data' },
-  { id: '8', icon: 'tv', name: 'Cable TV' },
-  { id: '9', icon: 'bolt', name: 'Utility' },
+  { id: '1', icon: require('../assets/fund.png'), name: 'Fund Wallet' },
+  { id: '2', icon: require('../assets/wallet-minus.png'), name: 'Withdraw' },
+  { id: '3', icon: require('../assets/receipt.png'), name: 'Pay Ellis' },
+  { id: '4', icon: require('../assets/card.png'), name: 'Cards' },
+  { id: '5', icon: require('../assets/strongbox.png'), name: 'Squareme Pot' },
+  { id: '6', icon: require('../assets/mobile.png'), name: 'Airtime' },
+  { id: '7', icon: require('../assets/wifi.png'), name: 'Data' },
+  { id: '8', icon: require('../assets/monitor.png'), name: 'Cable TV' },
+  { id: '9', icon: require('../assets/lamp-charge.png'), name: 'Utility' },
 ];
 
 const transactions = [
@@ -37,7 +39,7 @@ const transactions = [
     amount: '-NGN 5000',
     date: 'August 07, 06:03 AM',
     status: 'Successful',
-    icon: 'arrow-up'
+    icon: require('../assets/solid_money-bills.png')
   },
   {
     id: '2',
@@ -45,7 +47,7 @@ const transactions = [
     amount: '+NGN 5000',
     date: 'August 07, 06:03 AM',
     status: 'Failed',
-    icon: 'arrow-down'
+    icon: require('../assets/solid_money-bills.png')
   },
 ];
 
@@ -53,12 +55,14 @@ const suggestedActions = [
   {
     id: '1',
     title: 'Earn up to 14% interest on your locked funds',
-    color: '#E1F5FE'
+    color: Colors.lighter,
+    image: require('../assets/piggy-bank.png')
   },
   {
     id: '2',
-    title: 'Speed up your payments',
-    color: '#F1F8E9'
+    title: 'Speed up your bills payments',
+    color: '#D7E5FF',
+    image: require('../assets/half.png')
   },
 ];
 
@@ -68,15 +72,21 @@ const HomeScreen = () => {
   const [showAllTransactions, setShowAllTransactions] = useState(false);
 
   const displayedQuickActions = showAllQuickActions ? quickActions : quickActions.slice(0, 5);
-  const displayedTransactions = showAllTransactions ? transactions : transactions.slice(0, 2);
+  const displayedTransactions = showAllTransactions ? transactions : transactions.slice(0, 1);
 
   return (
     <ScrollView style={styles.container}>
       <LinearGradient
-        colors={['#00C6FB', '#FFFFFF']}
+        colors={[
+          'rgb(206, 236, 244)',
+          'rgb(224, 238, 243)',
+          'rgb(224, 233, 235)',
+          'rgb(232, 240, 242)',
+          '#ffffff'
+        ]}
         start={{ x: 0.5, y: 0 }}
         end={{ x: 0.5, y: 1 }}
-        style={styles.container}
+        style={styles.linearContainer}
       >
         <View style={styles.header}>
           <View style={styles.profileSection}>
@@ -101,48 +111,53 @@ const HomeScreen = () => {
             <TouchableOpacity style={[styles.iconContainer, styles.notificationIcon]}>
               <Ionicons
                 name="notifications-outline"
-                size={20}
+                size={24}
                 color={Colors.taintedBlack}
               />
               <View style={styles.notificationBadgeRight} />
             </TouchableOpacity>
           </View>
         </View>
-      </LinearGradient>
 
-      <View style={styles.walletCard}>
-        <Pressable style={styles.transactionHistoryButton}>
-          <Text style={styles.transactionHistoryText}>Transaction History</Text>
-          <MaterialIcons name="chevron-right" size={20} color="#fff" />
-        </Pressable>
+        <View style={styles.walletCard}>
+          <Pressable style={styles.transactionHistoryButton}>
+            <Text style={styles.transactionHistoryText}>Transaction History</Text>
+            <MaterialIcons name="chevron-right" size={20} color="#fff" />
+          </Pressable>
 
-        <View style={styles.balanceSection}>
-          <Text style={styles.balanceLabel}>Wallet Balance</Text>
-          <View style={styles.balanceRow}>
-            <Text style={styles.balanceAmount}>
-              {showFullBalance ? 'NGN 500,000.00' : 'NGN ************'}
-            </Text>
-            <TouchableOpacity onPress={() => setShowFullBalance(!showFullBalance)}>
+          <TouchableOpacity
+            onPress={() => setShowFullBalance(!showFullBalance)}
+            style={styles.balanceSection}
+          >
+            <View style={styles.balanceContainer}>
+              <Text style={styles.balanceLabel}>Wallet Balance</Text>
               <Feather
                 name={showFullBalance ? 'eye-off' : 'eye'}
-                size={20}
+                size={14}
                 color="#fff"
                 style={styles.eyeIcon}
               />
-            </TouchableOpacity>
+            </View>
+            <View style={styles.balanceRow}>
+              <Text style={styles.balanceAmount}>
+                {showFullBalance ? 'NGN 500,000.00' : 'NGN ************'}
+              </Text>
+            </View>
+          </TouchableOpacity>
+
+          <View style={styles.tagSection}>
+            <Text style={styles.tagText}>Squareme tag: @davidoloye22</Text>
+            <MaterialIcons name="content-copy" size={16} color={Colors.purple} />
           </View>
         </View>
-
-        <View style={styles.tagSection}>
-          <Text style={styles.tagText}>Squareme tag: @davidoloye22</Text>
-          <MaterialIcons name="content-copy" size={16} color="#fff" />
-        </View>
-      </View>
+      </LinearGradient>
 
       <View style={styles.section}>
         <View style={styles.sectionHeader}>
           <Text style={styles.sectionTitle}>Quick Actions</Text>
-          <Pressable onPress={() => setShowAllQuickActions(!showAllQuickActions)}>
+          <Pressable
+            onPress={() => setShowAllQuickActions((show) => !show)}
+          >
             <Text style={styles.seeMoreText}>
               {showAllQuickActions ? 'See less' : 'See more'}
             </Text>
@@ -150,14 +165,14 @@ const HomeScreen = () => {
         </View>
 
         <View style={styles.quickActionsContainer}>
-          {displayedQuickActions.map((action) => (
-            <Pressable key={action.id} style={styles.quickAction}>
-              <View style={styles.quickActionIcon}>
-                <FontAwesome name={action.icon} size={20} color="#4CAF50" />
-              </View>
-              <Text style={styles.quickActionText}>{action.name}</Text>
-            </Pressable>
-          ))}
+          {displayedQuickActions.map((action) => {
+            return (
+              <AnimatedBox
+                key={action.id}
+                action={action}
+              />
+            )
+          })}
         </View>
       </View>
 
@@ -173,10 +188,13 @@ const HomeScreen = () => {
           {displayedTransactions.map((transaction) => (
             <View key={transaction.id} style={styles.transactionItem}>
               <View style={styles.transactionIcon}>
-                <MaterialIcons
-                  name={transaction.icon}
-                  size={20}
-                  color={transaction.status === 'Successful' ? '#4CAF50' : '#F44336'}
+                <Image
+                  source={transaction.icon}
+                  style={{
+                    width: 42,
+                    height: 45,
+                    resizeMode: 'contain',
+                  }}
                 />
               </View>
 
@@ -188,7 +206,6 @@ const HomeScreen = () => {
               <View style={styles.transactionAmountContainer}>
                 <Text style={[
                   styles.transactionAmount,
-                  { color: transaction.amount.startsWith('+') ? '#4CAF50' : '#F44336' }
                 ]}>
                   {transaction.amount}
                 </Text>
@@ -204,16 +221,20 @@ const HomeScreen = () => {
 
           <Pressable
             style={styles.seeMoreTransactions}
-            onPress={() => setShowAllTransactions(!showAllTransactions)}
+            onPress={() => setShowAllTransactions((show) => !show)}
           >
             <Text style={styles.seeMoreTransactionsText}>
               {showAllTransactions ? 'See less' : 'See more'}
             </Text>
+            <MaterialIcons
+              name={showAllTransactions ? "chevron-right" : 'keyboard-arrow-down'}
+              size={18}
+              color={Colors.purple}
+            />
           </Pressable>
         </View>
       </View>
 
-      {/* Suggested Actions Section */}
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Suggested actions</Text>
         <FlatList
@@ -227,7 +248,7 @@ const HomeScreen = () => {
             ]}>
               <Text style={styles.suggestedActionText}>{item.title}</Text>
               <Image
-                source={require('../assets/piggy-bank.png')}
+                source={item.image}
                 style={styles.suggestedActionIcon}
               />
             </Pressable>
@@ -243,15 +264,19 @@ const HomeScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#f5f5f5',
+    backgroundColor: '#FFFFFF',
+    // paddingHorizontal: 18,
+  },
+  linearContainer: {
     paddingTop: 48,
-    paddingHorizontal: 18,
+    marginBottom: 40,
   },
   header: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 20,
+    paddingBottom: 20,
+    paddingHorizontal: 18,
   },
   profileSection: {
     flexDirection: 'row',
@@ -306,29 +331,39 @@ const styles = StyleSheet.create({
   walletCard: {
     backgroundColor: Colors.accent,
     borderRadius: 12,
-    padding: 16,
-    marginBottom: 20,
+    paddingHorizontal: 16,
     elevation: 3,
+    marginHorizontal: 18,
   },
   transactionHistoryButton: {
     flexDirection: 'row',
-    justifyContent: 'flex-end',
+    alignSelf: 'flex-end',
     alignItems: 'center',
+    marginTop: 10,
     marginBottom: 20,
+    backgroundColor: '#000942',
+    padding: 5,
+    paddingHorizontal: 10,
+    borderRadius: 16,
   },
   transactionHistoryText: {
     color: '#fff',
     fontSize: 14,
     marginRight: 5,
   },
+  balanceContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 5,
+  },
   balanceSection: {
     alignItems: 'center',
     marginBottom: 20,
+    alignSelf: 'center'
   },
   balanceLabel: {
     color: '#fff',
     fontSize: 14,
-    marginBottom: 5,
   },
   balanceRow: {
     flexDirection: 'row',
@@ -342,12 +377,13 @@ const styles = StyleSheet.create({
   },
   eyeIcon: {
     opacity: 0.8,
+    marginLeft: 5
   },
   tagSection: {
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(0,0,0,0.1)',
+    backgroundColor: '#000942',
     paddingVertical: 8,
     borderRadius: 6,
   },
@@ -358,6 +394,7 @@ const styles = StyleSheet.create({
   },
   section: {
     marginBottom: 20,
+    paddingHorizontal: 18,
   },
   sectionHeader: {
     flexDirection: 'row',
@@ -366,12 +403,13 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
   sectionTitle: {
-    fontSize: 16,
-    fontWeight: '500',
+    fontSize: 15,
+    fontFamily: 'ClashGrotesk-Medium',
   },
   seeMoreText: {
-    color: '#4CAF50',
+    color: Colors.purple,
     fontSize: 14,
+    fontFamily: 'ClashGrotesk-Medium',
   },
   quickActionsContainer: {
     flexDirection: 'row',
@@ -379,15 +417,18 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   quickAction: {
-    width: '19%',
+    width: 70,
+    height: 70,
+    borderRadius: 6.8,
     alignItems: 'center',
     marginBottom: 15,
+    backgroundColor: Colors.lighter,
   },
   quickActionIcon: {
-    width: 50,
-    height: 50,
+    // width: 50,
+    // height: 50,
     borderRadius: 25,
-    backgroundColor: '#E8F5E9',
+    // backgroundColor: '#E8F5E9',
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 5,
@@ -400,20 +441,19 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     borderRadius: 12,
     padding: 16,
-    elevation: 2,
+    elevation: 1,
+    position: 'relative'
   },
   transactionItem: {
     flexDirection: 'row',
     alignItems: 'center',
     paddingVertical: 12,
-    borderBottomWidth: 1,
-    borderBottomColor: '#eee',
   },
   transactionIcon: {
     width: 40,
     height: 40,
-    borderRadius: 20,
-    backgroundColor: '#F5F5F5',
+    borderRadius: 10,
+    backgroundColor: Colors.orange,
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 12,
@@ -422,13 +462,12 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   transactionType: {
-    fontSize: 14,
-    fontWeight: '500',
-    marginBottom: 2,
+    fontSize: 15,
+    marginBottom: 7,
   },
   transactionDate: {
-    fontSize: 12,
-    color: '#757575',
+    fontSize: 13,
+    color: '#70747E',
   },
   transactionAmountContainer: {
     alignItems: 'flex-end',
@@ -442,33 +481,45 @@ const styles = StyleSheet.create({
     fontSize: 12,
   },
   seeMoreTransactions: {
-    paddingTop: 12,
+    borderRadius: 12,
+    borderColor: '#E4E9F2',
+    borderWidth: 1,
+    padding: 3,
+    paddingLeft: 8,
+    flexDirection: 'row',
     alignItems: 'center',
+    position: 'absolute',
+    bottom: -15,
+    alignSelf: 'center'
   },
   seeMoreTransactionsText: {
-    color: '#4CAF50',
-    fontSize: 14,
+    fontSize: 13,
+    color: Colors.purple,
+    fontFamily: 'ClashGrotesk-Medium',
   },
   suggestedActionsContainer: {
     paddingVertical: 5,
   },
   suggestedActionCard: {
-    width: 200,
-    height: 100,
-    borderRadius: 12,
-    padding: 16,
+    width: 270,
+    height: 250,
+    borderRadius: 16,
+    padding: 24,
     marginRight: 15,
-    justifyContent: 'center',
+    flexDirection: 'column',
+    alignItems: 'center'
   },
   suggestedActionText: {
-    fontSize: 14,
-    fontWeight: '500',
+    fontSize: 16,
+    fontFamily: 'ClashGrotesk-Medium',
     marginBottom: 10,
+    lineHeight: 24,
+    color: '#2E3A59'
   },
   suggestedActionIcon: {
-    width: 40,
-    height: 40,
-    alignSelf: 'flex-end',
+    width: 200,
+    height: 200,
+    alignSelf: 'center',
   },
 });
 
