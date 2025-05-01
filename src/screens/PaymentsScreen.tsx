@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   Image,
   Pressable,
+  ImageBackground,
 } from 'react-native';
 import ActionItem from '../components/payment/ActionItem';
 import TransactionItem from '../components/payment/TransactionItem';
@@ -14,6 +15,9 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
+import { Colors } from '../utils/colors';
+import { PaymentsNavigationProp } from '../types/payment.navigation';
+import { useNavigation } from '@react-navigation/native';
 
 
 const recentTransactions = [
@@ -23,24 +27,36 @@ const recentTransactions = [
     description: '0095649856 GIFT OLUWAS......',
     amount: '₦30,000.00',
   },
+  {
+    id: '2',
+    title: 'Send to Client',
+    description: '0093339111 CHIOMA LOVE......',
+    amount: '₦99,000.00',
+  },
 ];
 
 const PaymentsScreen = () => {
   const [showAllTransactions, setShowAllTransactions] = useState(false);
 
+  const displayedTransactions = showAllTransactions ? recentTransactions : recentTransactions.slice(0, 1);
+
+  const navigation = useNavigation<PaymentsNavigationProp>();
+
   const handleSendMoney = () => {
-    console.log('Send money pressed');
-    // Navigate to send money screen
+    navigation.navigate('Send_Request', {
+      Category: 'send',
+    } as never);
   };
 
   const handleRequestMoney = () => {
-    console.log('Request money pressed');
-    // Navigate to request money screen
+    navigation.navigate('Send_Request', {
+      Category: 'request',
+    } as never);
   };
 
   const handleSeeMore = () => {
     console.log('See more pressed');
-    // Navigate to transactions screen
+    setShowAllTransactions((show) => !show)
   };
 
   const handleCopyReferralCode = () => {
@@ -76,7 +92,7 @@ const PaymentsScreen = () => {
 
       <View style={styles.section}>
         <Text style={styles.sectionTitle}>Recent transactions</Text>
-        {recentTransactions.map((transaction) => (
+        {displayedTransactions.map((transaction) => (
           <TransactionItem
             key={transaction.id}
             title={transaction.title}
@@ -84,16 +100,12 @@ const PaymentsScreen = () => {
             amount={transaction.amount}
           />
         ))}
-        <TouchableOpacity style={styles.seeMoreButton} onPress={handleSeeMore}>
-          <Text style={styles.seeMoreText}>See more {'>'}</Text>
-        </TouchableOpacity>
         <Pressable
           style={styles.seeMoreButton}
           onPress={handleSeeMore}
         >
           <Text style={styles.seeMoreText}>
-            {/* {showAllTransactions ? 'See less' : 'See more'} */}
-            {'See more'}
+            {showAllTransactions ? 'See less' : 'See more'}
           </Text>
           <MaterialIcons
             name={showAllTransactions ? "chevron-right" : 'keyboard-arrow-down'}
@@ -103,15 +115,30 @@ const PaymentsScreen = () => {
         </Pressable>
       </View>
 
-      <View style={styles.referralSection}>
-        <Text style={styles.referralTitle}>Refer your friends and earn rewards</Text>
-        <Text style={styles.referralDescription}>
-          Refer your friends using your username/tag and earn rewards on each referral
-        </Text>
+      <ImageBackground
+        style={styles.referralSection}
+        source={require('../assets/vectorBackground.png')}
+      >
+        <View style={styles.referralContainer}>
+          <View
+            style={styles.textContainer}
+          >
+            <Text style={styles.referralTitle}>
+              Refer your friends and earn rewards
+            </Text>
+            <Text style={styles.referralDescription}>
+              Refer your friends using your username/tag and earn rewards on each referral
+            </Text>
+          </View>
+          <Image
+            source={require('../assets/vector.png')}
+            style={styles.vector}
+          />
+        </View>
         <TouchableOpacity style={styles.copyButton} onPress={handleCopyReferralCode}>
           <Text style={styles.copyButtonText}>Copy referral code</Text>
         </TouchableOpacity>
-      </View>
+      </ImageBackground>
     </ScrollView>
   );
 };
@@ -150,40 +177,62 @@ const styles = StyleSheet.create({
   seeMoreButton: {
     alignSelf: 'center',
     marginTop: 8,
+
+    borderRadius: 12,
+    borderColor: '#E4E9F2',
+    borderWidth: 1,
+    padding: 3,
+    paddingLeft: 8,
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   seeMoreText: {
-    color: '#0066FF',
-    fontSize: 14,
-    fontWeight: '600',
+    color: '#70747E',
+    fontFamily: 'ClashGrotesk-Medium',
   },
   referralSection: {
-    backgroundColor: '#FFF',
+    backgroundColor: '#172242',
     borderRadius: 12,
+    overflow: 'hidden',
     padding: 16,
+    paddingTop: 20
   },
   referralTitle: {
-    fontSize: 16,
-    fontWeight: '600',
-    color: '#333',
-    marginBottom: 8,
+    fontSize: 17,
+    fontFamily: 'ClashGrotesk-Semibold',
+    color: Colors.white,
+    marginBottom: 17,
   },
   referralDescription: {
-    fontSize: 14,
-    color: '#666',
+    fontSize: 12,
+    color: Colors.white,
     marginBottom: 16,
     lineHeight: 20,
   },
   copyButton: {
     backgroundColor: '#F0F5FF',
     borderRadius: 8,
-    paddingVertical: 12,
+    height: 32,
     alignItems: 'center',
+    justifyContent: 'center',
+    width: 100
   },
   copyButtonText: {
-    color: '#0066FF',
-    fontSize: 14,
-    fontWeight: '600',
+    color: '#2E3A59',
+    fontSize: 10,
+    fontFamily: 'ClashGrotesk-Medium',
   },
+  vector: {
+    width: 85,
+    height: 85,
+    // alignSelf: 'center',
+  },
+  referralContainer: {
+    flexDirection: 'row'
+  },
+  textContainer: {
+    width: '80%'
+  }
 });
 
 export default PaymentsScreen;
