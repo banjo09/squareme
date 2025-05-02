@@ -1,29 +1,40 @@
-import React, { useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import {
   View,
   Text,
   StyleSheet,
   TouchableOpacity,
   TextInput,
-  Modal,
-  Pressable,
-  Image,
-  Keyboard,
   Alert,
+  Dimensions,
 } from 'react-native';
+import { useFocusEffect } from '@react-navigation/native';
+import { BottomTabNavigationOptions, useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
-import { BlurView } from '@react-native-community/blur';
-import { PaymentCategory, Send_RequestNavigationProp, Send_RequestRouteProp } from '../types/payment.navigation';
+import { PaymentCategory, PaymentStackParamList, Send_RequestNavigationProp, Send_RequestRouteProp } from '../types/payment.navigation';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { Colors } from '../utils/colors';
+import DestinationModal from '../components/payment/DestinationModal';
 
-const destinations = [
-  { id: 'bank', label: 'Send to bank account' },
-  { id: 'beneficiary', label: 'Send to a beneficiary' },
-  { id: 'tag', label: 'Send using Squareme tag' },
-  { id: 'contact', label: 'Send to contact list' },
+type destinationType = {
+  id: string;
+  label: string;
+  loc: keyof PaymentStackParamList;
+}
+const sendDestinations: destinationType[] = [
+  { id: 'bank', label: 'Send to bank account', loc: 'Send_SquaremeTag' },
+  { id: 'beneficiary', label: 'Send to a beneficiary', loc: 'Send_Beneficiaries' },
+  { id: 'tag', label: 'Send using Squareme tag', loc: 'Send_SquaremeTag' },
+  { id: 'contact', label: 'Send to contact list', loc: 'Send_ContactList' },
 ];
 
+const requestDestinations: destinationType[] = [
+  { id: 'beneficiary', label: 'Request from a beneficiary', loc: 'Request_Beneficiaries' },
+  { id: 'tag', label: 'Request using Squareme tag', loc: 'Request_SquaremeTag' },
+  { id: 'contact', label: 'Request from contact list', loc: 'Request_ContactList' },
+];
+
+const { width, height } = Dimensions.get('window');
 
 type Send_RequestParams = {
   Category: PaymentCategory;
@@ -37,6 +48,26 @@ const Send_Request_Screen = () => {
 
   const route = useRoute<Send_RequestRouteProp>();
   const navigation = useNavigation<Send_RequestNavigationProp>();
+  const tabBarHeight = useBottomTabBarHeight();
+
+  useFocusEffect(
+    useCallback(() => {
+      navigation.getParent()?.setOptions({
+        tabBarStyle: {
+          backgroundColor: '#0D0F1B',
+          borderColor: '#0D0F1B',
+        },
+      } as BottomTabNavigationOptions);
+
+      return () => {
+        navigation.getParent()?.setOptions({
+          tabBarStyle: {
+            backgroundColor: '#FFFFFF',
+          },
+        } as BottomTabNavigationOptions);
+      };
+    }, [])
+  );
 
   const {
     Category,
@@ -68,8 +99,13 @@ const Send_Request_Screen = () => {
       Alert.alert('Please enter amount and select destination');
       return;
     }
-    console.log(`Sending ${amount} to ${selectedDestination}`);
-    // Navigate to next screen or process payment
+    const destinationScreen = Category == 'send'
+      ? sendDestinations.find(d => d.id === selectedDestination)?.loc
+      : requestDestinations.find(d => d.id === selectedDestination)?.loc
+
+    navigation.navigate(destinationScreen as keyof PaymentStackParamList, {
+      Amount: amount,
+    } as never);
   };
 
   return (
@@ -84,7 +120,18 @@ const Send_Request_Screen = () => {
         onPress={() => setShowDestinationModal(true)}
       >
         <Text style={styles.destinationButtonText}>
-          Where do you want to send money?
+          {/* {
+            Category == 'send' ? 'Where do you want to send money?'
+              : 'Who do you want to request from?'
+          } */}
+          {
+            selectedDestination && Category == 'send'
+              ? sendDestinations.find(d => d.id === selectedDestination)?.label
+              : selectedDestination && Category == 'request'
+                ? requestDestinations.find(d => d.id === selectedDestination)?.label
+                : !selectedDestination && Category == 'send' ? 'Where do you want to send money?'
+                  : 'Who do you want to request from?'
+          }
         </Text>
         <MaterialIcons
           name='keyboard-arrow-down'
@@ -135,7 +182,20 @@ const Send_Request_Screen = () => {
         <Text style={styles.proceedButtonText}>Proceed</Text>
       </TouchableOpacity>
 
-      <Modal
+      <DestinationModal
+        visible={showDestinationModal}
+        onClose={() => setShowDestinationModal(false)}
+        tabBarHeight={tabBarHeight}
+        destinations={Category == 'send' ? sendDestinations : requestDestinations}
+        handleDestinationSelect={handleDestinationSelect}
+        selectedDestination={selectedDestination}
+        label={
+          Category == 'send' ? 'Where do you want to send money?'
+            : 'Who do you want to request from?'
+        }
+      />
+
+      {/* <Modal
         visible={showDestinationModal}
         transparent={true}
         animationType="fade"
@@ -171,7 +231,7 @@ const Send_Request_Screen = () => {
             </TouchableOpacity>
           ))}
         </View>
-      </Modal>
+      </Modal> */}
     </View>
   );
 };
@@ -207,7 +267,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     paddingVertical: 12,
     borderRadius: 6,
-    marginBottom: 20,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -227,26 +286,12 @@ const styles = StyleSheet.create({
   nairaIcon: {
     fontSize: 30,
     color: Colors.white,
-    // paddingBottom: 5,
-    // alignSelf: 'center',
-    // marginRight: 4,
   },
 
-  // amountInput: {
-  //   flex: 1,
-  //   fontSize: 18,
-  //   color: '#000',
-  // },
-
   amountInput: {
-    // flex: 0.5,
     fontSize: 55,
     color: Colors.white,
-    // marginLeft: 20,
-    // paddingLeft: 20,
-    // fontFamily: 'ClashGrotesk-Bold',
     textAlign: 'center',
-    // marginVertical: 20,
   },
 
   numberPad: {
@@ -255,8 +300,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   numberButton: {
-    width: '30%',
-    aspectRatio: 1,
+    width: width * 0.23,
+    height: width * 0.23,
     justifyContent: 'center',
     alignItems: 'center',
     margin: 5,
@@ -266,18 +311,20 @@ const styles = StyleSheet.create({
     color: '#BDBDBD',
   },
   proceedButton: {
-    backgroundColor: '#0066FF',
-    // backgroundColor: Colors.red,
-    padding: 16,
-    borderRadius: 10,
-    // marginTop: 30,
+    backgroundColor: '#4C525E',
+    paddingVertical: 18,
+    paddingHorizontal: 36,
+    borderRadius: 8,
     alignItems: 'center',
   },
   proceedButtonText: {
     color: '#FFF',
-    fontSize: 16,
-    fontWeight: 'bold',
+    fontSize: 15,
   },
+
+
+
+
   modalOverlay: {
     flex: 1,
     justifyContent: 'flex-end',
