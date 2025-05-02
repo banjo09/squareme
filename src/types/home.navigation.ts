@@ -2,7 +2,7 @@ import {RouteProp} from '@react-navigation/native';
 import {StackNavigationProp} from '@react-navigation/stack';
 
 export type HomeStackParamList = {
-  Home: undefined;
+  HomeScreen: undefined;
   Notification: undefined;
   // VerifyCode: {
   //   phoneNumber: string;
@@ -20,7 +20,7 @@ export type HomeStackParamList = {
 
 export type RootNavigationProp = StackNavigationProp<
   HomeStackParamList,
-  'Home'
+  'HomeScreen'
 >;
 
 export type NotificationNavigationProp = StackNavigationProp<

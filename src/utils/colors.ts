@@ -11,6 +11,7 @@ export const Colors = {
   error: '#e74c3c',
   success: '#2ecc71',
   info: '#3498db',
+  label: '#70747E',
   light: '#F5F5F5',
   lighter: '#F9F9F9',
   orange: '#FFF4EB',
