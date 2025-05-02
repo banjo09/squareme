@@ -9,7 +9,7 @@ const Stack = createStackNavigator<HomeStackParamList>();
 const HomeStackNavigator = () => {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="Home" component={HomeScreen} />
+      <Stack.Screen name="HomeScreen" component={HomeScreen} />
       <Stack.Screen name="Notification" component={NotificationScreen} />
       {/* <Stack.Screen name="DetailScreen" component={DetailScreen} /> */}
     </Stack.Navigator>
