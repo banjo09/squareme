@@ -28,7 +28,9 @@ type SecurityPinParams = {
     message: string;
     description: string;
     label: string
-  }
+  },
+  newScreenFlow: keyof RootStackParamList;
+  params: {}
 };
 
 const SecurityPinScreen = () => {
@@ -42,11 +44,16 @@ const SecurityPinScreen = () => {
     label,
     screen,
     confirmSecurityScreenParams,
+    newScreenFlow,
+    params
   } = route.params as unknown as SecurityPinParams;
 
   const handleSubmit = () => {
     if (screen) {
       navigation.navigate('ConfirmSecurityPin', { screen, confirmSecurityScreenParams } as never);
+    }
+    if (newScreenFlow) {
+      navigation.navigate(newScreenFlow, params as never);
     }
   };
 

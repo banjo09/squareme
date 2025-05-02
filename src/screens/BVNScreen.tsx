@@ -90,7 +90,7 @@ const BVNScreen = () => {
             <Ionicons
               name="shield-checkmark-outline"
               size={20}
-              color={Colors.taintPurple}
+              color={Colors.purple}
             />
             <Text style={styles.infoTopic}>
               Why we need your BVN?
@@ -99,7 +99,7 @@ const BVNScreen = () => {
               <MaterialIcons
                 name="keyboard-arrow-up"
                 size={25}
-                color={Colors.taintPurple}
+                color={Colors.purple}
               />
             </Pressable>
           </View>
@@ -183,7 +183,7 @@ const styles = StyleSheet.create({
     borderRadius: 8
   },
   infoTopic: {
-    color: Colors.taintPurple,
+    color: Colors.purple,
     marginLeft: 10,
     fontFamily: 'ClashGrotesk-Medium'
   },
