@@ -132,7 +132,6 @@ const SendBeneficiariesInputScreen = () => {
             onChangeText={setAmount}
             keyboardType='numeric'
             leftIcon={<Text style={styles.iconText}>₦</Text>}
-          // containerStyle={styles.inputContainer}
           />
 
         </View>
