@@ -15,16 +15,17 @@ import { Colors } from '../utils/colors';
 import { Text } from '../theme/CustomText';
 import PinInput from '../components/PinInput';
 import CustomButton from '../components/CustomButton';
-import { PaymentStackParamList, SendSquaremeTagRouteProp } from '../types/payment.navigation';
+import { PaymentCategory, PaymentStackParamList, SendSquaremeTagRouteProp } from '../types/payment.navigation';
 import CustomTextInput from '../components/CustomTextInput';
 
 type SendBeneficiariesInputParams = {
   Amount: number;
+  Name: string,
+  Phone: string,
+  Category: PaymentCategory
 };
 
 const SendBeneficiariesInputScreen = () => {
-  const [timer, setTimer] = useState(30);
-  const [pin, setPin] = useState('');
   const [tag, setTag] = useState('');
   const [amt, setAmount] = useState('');
   const [purpose, setPurpose] = useState('');
@@ -34,47 +35,27 @@ const SendBeneficiariesInputScreen = () => {
 
   const {
     Amount: amount,
+    Name: name,
+    Phone: phone,
+    Category
   } = route.params as unknown as SendBeneficiariesInputParams;
 
   useEffect(() => {
     setAmount(amount.toString())
+    setTag(phone.toString())
   }, [amount])
 
-  useEffect(() => {
-    const countdown = setInterval(() => {
-      setTimer((prevTimer) => {
-        if (prevTimer <= 1) {
-          clearInterval(countdown);
-          return 0;
-        }
-        return prevTimer - 1;
-      });
-    }, 1000);
-
-    return () => clearInterval(countdown);
-  }, [timer]);
-
   const handleVerify = () => {
-    console.log('Verifying code:', pin);
     navigation.navigate('ConfirmTransaction', {
       Amount: amount,
-      Beneficiary: tag,
+      Beneficiary: name,
+      BeneficiaryPhone: phone,
+      Category
     } as unknown as undefined);
   };
 
   const handleBackClick = () => {
     navigation.goBack()
-  };
-
-  const handleResendCode = () => {
-    if (timer === 0) {
-      setTimer(30);
-    }
-  };
-
-  const handlePinComplete = (enteredPin: string) => {
-    setPin(enteredPin);
-    console.log('PIN entered:', enteredPin);
   };
 
   return (
@@ -90,61 +71,108 @@ const SendBeneficiariesInputScreen = () => {
             color={Colors.primary}
             onPress={handleBackClick}
           />
-          <Text style={styles.title}>Send</Text>
+          <Text style={styles.title}>
+            {Category === 'send' ? 'Send' : 'Request from Beneficiary'}
+          </Text>
         </View>
 
-        <View style={styles.inputView}>
-          <Text style={styles.bvnText}>
-            Beneficiary Phone Number
-          </Text>
-          <CustomTextInput
-            value={tag}
-            onChangeText={setTag}
-            leftIcon={<Feather name="at-sign" size={16} color="#70747E" />}
-          />
-          {
-            tag && <CustomButton
-              title={tag}
-              onPress={() => { }}
-              mode='filled'
-              buttonStyle={styles.tagButton}
-              textStyle={styles.tagText}
-            />
-          }
-        </View>
-        <View style={styles.inputView}>
-          <Text style={styles.bvnText}>
-            Purpose for sending (Optional)
-          </Text>
-          <CustomTextInput
-            value={purpose}
-            onChangeText={setPurpose}
-          // containerStyle={styles.inputContainer}
-          />
+        {Category === 'send' ?
+          <>
+            <View style={styles.inputView}>
+              <Text style={styles.bvnText}>
+                Beneficiary Phone Number
+              </Text>
+              <CustomTextInput
+                value={tag}
+                onChangeText={setTag}
+                leftIcon={<Feather name="at-sign" size={16} color="#70747E" />}
+              />
+              {
+                name && <CustomButton
+                  title={name}
+                  onPress={() => { }}
+                  mode='filled'
+                  buttonStyle={styles.tagButton}
+                  textStyle={styles.tagText}
+                />
+              }
+            </View>
+            <View style={styles.inputView}>
+              <Text style={styles.bvnText}>
+                Purpose for sending (Optional)
+              </Text>
+              <CustomTextInput
+                value={purpose}
+                onChangeText={setPurpose}
+              // containerStyle={styles.inputContainer}
+              />
 
-        </View>
-        <View style={styles.inputView}>
-          <Text style={styles.bvnText}>
-            Amount
-          </Text>
-          <CustomTextInput
-            value={amt}
-            onChangeText={setAmount}
-            keyboardType='numeric'
-            leftIcon={<Text style={styles.iconText}>₦</Text>}
-          />
+            </View>
+            <View style={styles.inputView}>
+              <Text style={styles.bvnText}>
+                Amount
+              </Text>
+              <CustomTextInput
+                value={amt}
+                onChangeText={setAmount}
+                keyboardType='numeric'
+                leftIcon={<Text style={styles.iconText}>₦</Text>}
+              />
 
-        </View>
+            </View>
+          </> : <>
+            <View style={styles.inputView}>
+              <Text style={styles.bvnText}>
+                Amount
+              </Text>
+              <CustomTextInput
+                value={amt}
+                onChangeText={setAmount}
+                keyboardType='numeric'
+                leftIcon={<Text style={styles.iconText}>₦</Text>}
+              />
+            </View>
+            <View style={styles.inputView}>
+              <Text style={styles.bvnText}>
+                Recipient Phone Number
+              </Text>
+              <CustomTextInput
+                value={tag}
+                onChangeText={setTag}
+                leftIcon={<Feather name="at-sign" size={16} color="#70747E" />}
+              />
+              {
+                name && <CustomButton
+                  title={name}
+                  onPress={() => { }}
+                  mode='filled'
+                  buttonStyle={styles.tagButton}
+                  textStyle={styles.tagText}
+                />
+              }
+            </View>
+            <View style={styles.inputView}>
+              <Text style={styles.bvnText}>
+                Add a note (Optional)
+              </Text>
+              <CustomTextInput
+                value={purpose}
+                onChangeText={setPurpose}
+              />
+            </View>
+          </>
+        }
 
         <CustomButton
           key={amt}
-          title="Send Money"
+          title={Category === 'send' ? "Send Money" : "Request Money"}
           onPress={handleVerify}
           mode='filled'
           buttonStyle={[
             styles.verifyButton,
             (!amt || !tag) && styles.verifyButtonDisabled,
           ]}
+          disabled={!amt || !tag}
         />
       </View>
     </KeyboardAvoidingView>
