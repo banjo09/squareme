@@ -44,8 +44,7 @@ const VerifyEmailScreen = () => {
       description: 'Your email address has been added successfully.',
       nextAction: {
         label: 'Go to Dashboard',
-        // screen: 'Dashboard',
-        screen: 'ForgotPassword',
+        screen: 'MainApp',
         params: {},
       },
     });
