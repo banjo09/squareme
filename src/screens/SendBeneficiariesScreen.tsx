@@ -16,7 +16,7 @@ import { Colors } from '../utils/colors';
 import { getInitials } from '../utils/func';
 import { Text } from '../theme/CustomText';
 import CustomButton from '../components/CustomButton';
-import { PaymentStackParamList, Send_BeneficiariesNavigationProp, Send_BeneficiariesRouteProp, SendSquaremeTagRouteProp } from '../types/payment.navigation';
+import { PaymentCategory, PaymentStackParamList, Send_BeneficiariesNavigationProp, Send_BeneficiariesRouteProp, SendSquaremeTagRouteProp } from '../types/payment.navigation';
 import CustomTextInput from '../components/CustomTextInput';
 import Card from '../components/payment/Card';
 
@@ -47,6 +47,7 @@ const savedBeneficiaries: beneficiariesType[] = [
 
 type SendBeneficiariesParams = {
   Amount: number;
+  Category: PaymentCategory
 };
 
 const SendBeneficiariesScreen = () => {
@@ -60,13 +61,15 @@ const SendBeneficiariesScreen = () => {
 
   const {
     Amount: amount,
+    Category
   } = route.params as unknown as SendBeneficiariesParams;
 
   const handleBeneficiaryClick = ({ name, phone }: beneficiariesType) => {
     navigation.navigate('SendBeneficiariesInput', {
       Amount: amount,
-      name,
-      phone
+      Name: name,
+      Phone: phone,
+      Category
     } as unknown as undefined);
   };
 
