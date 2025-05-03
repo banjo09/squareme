@@ -25,13 +25,13 @@ const sendDestinations: destinationType[] = [
   { id: 'bank', label: 'Send to bank account', loc: 'Send_SquaremeTag' },
   { id: 'beneficiary', label: 'Send to a beneficiary', loc: 'Send_Beneficiaries' },
   { id: 'tag', label: 'Send using Squareme tag', loc: 'Send_SquaremeTag' },
-  { id: 'contact', label: 'Send to contact list', loc: 'Send_ContactList' },
+  { id: 'contact', label: 'Send to contact list', loc: 'Send_Contacts' },
 ];
 
 const requestDestinations: destinationType[] = [
-  { id: 'beneficiary', label: 'Request from a beneficiary', loc: 'Request_Beneficiaries' },
+  { id: 'beneficiary', label: 'Request from a beneficiary', loc: 'Send_Beneficiaries' },
   { id: 'tag', label: 'Request using Squareme tag', loc: 'Request_SquaremeTag' },
-  { id: 'contact', label: 'Request from contact list', loc: 'Request_ContactList' },
+  { id: 'contact', label: 'Request from contact list', loc: 'Send_Contacts' },
 ];
 
 const { width, height } = Dimensions.get('window');
@@ -73,12 +73,6 @@ const Send_Request_Screen = () => {
     Category,
   } = route.params as unknown as Send_RequestParams;
 
-  // const handleNext = () => {
-  //   if (nextAction?.screen) {
-  //     navigation.navigate(nextAction.screen, nextAction.params as never);
-  //   }
-  // };
-
   const handleNumberPress = (value: string) => {
     if (value === '<') {
       setAmount(prev => prev.slice(0, -1));
@@ -105,6 +99,7 @@ const Send_Request_Screen = () => {
 
     navigation.navigate(destinationScreen as keyof PaymentStackParamList, {
       Amount: amount,
+      Category
     } as never);
   };
 
