@@ -15,6 +15,7 @@ import CustomButton from '../components/CustomButton';
 
 const { width } = Dimensions.get('window');
 type SuccessParams = {
+  section: string;
   message: string;
   description: string;
   nextAction?: {
@@ -29,6 +30,7 @@ const SuccessScreen = () => {
   const navigation = useNavigation<SuccessScreenNavigationProp>();
 
   const {
+    section,
     message,
     description,
     nextAction,
@@ -50,7 +52,11 @@ const SuccessScreen = () => {
         <View style={styles.wrapper}>
           <View style={styles.imageContainer}>
             <Image
-              source={require('../assets/success.png')}
+              source={
+                section === 'Payments' ?
+                  require('../assets/paymentsLogo.png') :
+                  require('../assets/success.png')
+              }
               style={{
                 width: width * 0.8,
                 height: 140,
