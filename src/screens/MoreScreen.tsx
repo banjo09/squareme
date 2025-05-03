@@ -1,4 +1,3 @@
-// screens/MoreScreen.tsx
 import React from 'react';
 import {
   View,
@@ -49,12 +48,8 @@ const menuItems = [
 
 const MoreScreen = () => {
 
-  const navItems = ['Home', 'Payments', 'More', 'Profile'];
-  const activeTabIndex = 2; // More tab is active
-
   const handleMenuItemPress = (id: string) => {
     console.log(`Menu item ${id} pressed`);
-    // Navigate to appropriate screen based on id
   };
 
   return (
