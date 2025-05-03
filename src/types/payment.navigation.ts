@@ -10,8 +10,8 @@ export type PaymentStackParamList = {
   ConfirmTransaction: undefined;
   Send_Beneficiaries: undefined;
   Request_Beneficiaries: undefined;
-  Send_ContactList: undefined;
-  Request_ContactList: undefined;
+  Send_Contacts: undefined;
+  Request_Contacts: undefined;
   SendBeneficiariesInput: undefined;
 };
 
@@ -42,6 +42,15 @@ export type SendSquaremeTagRouteProp = RouteProp<
   'Send_SquaremeTag'
 >;
 
+export type RequestSquaremeTagNavigationProp = StackNavigationProp<
+  PaymentStackParamList,
+  'Request_SquaremeTag'
+>;
+
+export type RequestSquaremeTagRouteProp = RouteProp<
+  PaymentStackParamList,
+  'Request_SquaremeTag'
+>;
 export type ConfirmTransactionNavigationProp = StackNavigationProp<
   PaymentStackParamList,
   'ConfirmTransaction'
