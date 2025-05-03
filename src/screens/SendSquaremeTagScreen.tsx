@@ -42,6 +42,7 @@ const SendSquaremeTagScreen = () => {
     navigation.navigate('ConfirmTransaction', {
       Amount: amount,
       Beneficiary: tag,
+      Category: 'send'
     } as unknown as undefined);
   };
 
@@ -117,6 +118,7 @@ const SendSquaremeTagScreen = () => {
             styles.verifyButton,
             (!amt || !tag) && styles.verifyButtonDisabled,
           ]}
+          disabled={!amt || !tag}
         />
       </View>
     </KeyboardAvoidingView>
