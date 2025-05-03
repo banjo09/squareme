@@ -14,36 +14,37 @@ import { Colors } from '../utils/colors';
 import { Text } from '../theme/CustomText';
 import PinInput from '../components/PinInput';
 import CustomButton from '../components/CustomButton';
-import { ConfirmTransactionNavigationProp, ConfirmTransactionRootNavigationProp, ConfirmTransactionRouteProp, PaymentStackParamList } from '../types/payment.navigation';
+import { ConfirmTransactionNavigationProp, ConfirmTransactionRootNavigationProp, ConfirmTransactionRouteProp, PaymentCategory, PaymentStackParamList } from '../types/payment.navigation';
 
 type ConfirmTransactionParams = {
   Amount: number;
-  Beneficiary: string
+  Beneficiary: string;
+  BeneficiaryPhone: string,
+  Category: PaymentCategory
 };
 
 const ConfirmTransactionScreen = () => {
-
   const route = useRoute<ConfirmTransactionRouteProp>();
-  // const navigation = useNavigation<StackNavigationProp<PaymentStackParamList>>();
   const navigation = useNavigation<ConfirmTransactionRootNavigationProp>();
-  // type ConfirmTransactionNavigationProp = StackNavigationProp<
-  //   PaymentStackParamList,
-  //   'ConfirmTransaction'
-  // >;
 
   const {
     Amount: amount,
-    Beneficiary: beneficiary
+    Beneficiary: beneficiary,
+    BeneficiaryPhone: phone,
+    Category: category
   } = route.params as unknown as ConfirmTransactionParams;
 
   const handleConfirm = () => {
-    // console.log('Verifying code:', pin);
     navigation.navigate('SecurityPin', {
       label: 'Enter your Security PIN',
       newScreenFlow: 'Success',
       params: {
-        message: 'Transaction Successful!',
-        description: `You have successfully sent  NGN ${amount} to ${beneficiary}. The recipient should get an alert shortly`,
+        section: 'Payments',
+        message: category === 'send' ? 'Transaction Successful!' : 'Money Request sent ',
+        description:
+          category === 'send' ?
+            `You have successfully sent  NGN ${amount} to ${beneficiary}. The recipient should get an alert shortly` :
+            `You money request of  NGN ${amount} to ${beneficiary}. The recipient should get an alert shortly`,
         nextAction: {
           label: 'Done',
           screen: 'MainApp',
@@ -58,14 +59,6 @@ const ConfirmTransactionScreen = () => {
       }
     } as unknown as undefined);
   };
-  // navigation.navigate('TabNavigatorScreen', {
-  //   screen: 'Payments',
-  //   params: {
-  //     screen: 'PaymentsScreen',
-  //     params: {},
-  //   },
-  // });
-
 
   const handleBackClick = () => {
     navigation.goBack()
@@ -84,11 +77,17 @@ const ConfirmTransactionScreen = () => {
             color={Colors.primary}
             onPress={handleBackClick}
           />
-          <Text style={styles.title}>Confirm Transaction</Text>
+          <Text style={styles.title}>
+            {category == 'send' ? 'Confirm Transaction' : 'Confirm Request'}
+          </Text>
         </View>
 
         <Text style={styles.instruction}>
-          Please confirm the details before you proceed as your money cannot be reversed once processed.
+          {
+            category == 'send' ?
+              'Please confirm the details before you proceed as your money cannot be reversed once processed.'
+              : 'Please confirm the details of your request'
+          }
         </Text>
 
         <View style={styles.balanceContainer}>
@@ -99,7 +98,9 @@ const ConfirmTransactionScreen = () => {
         <View style={styles.beneficiaryContainer}>
           <View style={styles.beneficiaryRow}>
             <Text style={styles.beneficiaryLabel}>Beneficiary Number:</Text>
-            <Text style={styles.beneficiaryAmount}>0800000000</Text>
+            <Text style={styles.beneficiaryAmount}>
+              {phone ? phone : '0800000000'}
+            </Text>
           </View>
           <View style={styles.border} />
           <View style={styles.beneficiaryRow}>
