@@ -33,7 +33,7 @@ const CreateAccountScreen = () => {
   const nigeriaFlag = (
     <Image
       source={require('../assets/flag.png')}
-      style={{ width: 24, height: 24 }}
+      style={{ width: 32, height: 32 }}
     />
   );
 
