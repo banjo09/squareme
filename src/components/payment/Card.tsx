@@ -7,9 +7,10 @@ import { Colors } from '../../utils/colors';
 interface CardProps {
   Icon: ReactNode;
   title: string;
-  content: string;
+  content?: string;
   actionIcon: ReactNode;
   onPress?: () => void;
+  borderBottom?: boolean
 }
 
 const Card: FC<CardProps> = ({
@@ -17,17 +18,25 @@ const Card: FC<CardProps> = ({
   title,
   content,
   actionIcon,
-  onPress
+  onPress,
+  borderBottom
 }) => {
   return (
-    <Pressable onPress={onPress} style={styles.container}>
+    <Pressable
+      onPress={onPress}
+      style={[styles.container, borderBottom && styles.border]}
+    >
       <View style={styles.icon}>
         {/* <Icon/> */}
         {Icon}
       </View>
 
       <View style={styles.details}>
-        <Text style={styles.title}>{title}</Text>
+        <Text
+          style={[styles.title, !content && styles.contentAdjustment]}
+        >
+          {title}
+        </Text>
         {
           content && <Text style={styles.dateStyle}>
             {content}
@@ -53,8 +62,15 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginRight: 15,
   },
+  border: {
+    borderBottomWidth: 1,
+    borderBottomColor: '#F4F5F5',
+  },
   details: {
     flex: 1,
+  },
+  contentAdjustment: {
+    marginBottom: 0,
   },
   title: {
     fontSize: 17,

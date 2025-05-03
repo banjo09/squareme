@@ -6,6 +6,8 @@ import SendSquaremeTagScreen from '../screens/SendSquaremeTagScreen';
 import ConfirmTransactionScreen from '../screens/ConfirmTransactionScreen';
 import SendBeneficiariesScreen from '../screens/SendBeneficiariesScreen';
 import SendBeneficiariesInputScreen from '../screens/SendBeneficiariesInputScreen';
+import SendContactsScreen from '../screens/SendContactsScreen';
+import RequestSquaremeTagScreen from '../screens/RequestSquaremeTagScreen';
 
 const Stack = createStackNavigator<PaymentStackParamList>();
 
@@ -18,6 +20,8 @@ const PaymentStackNavigator = () => {
       <Stack.Screen name="ConfirmTransaction" component={ConfirmTransactionScreen} />
       <Stack.Screen name="Send_Beneficiaries" component={SendBeneficiariesScreen} />
       <Stack.Screen name="SendBeneficiariesInput" component={SendBeneficiariesInputScreen} />
+      <Stack.Screen name="Send_Contacts" component={SendContactsScreen} />
+      <Stack.Screen name="Request_SquaremeTag" component={RequestSquaremeTagScreen} />
     </Stack.Navigator>
   );
 };

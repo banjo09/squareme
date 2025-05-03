@@ -8,7 +8,7 @@ interface BillItemProps {
   description: string;
   onPress: () => void;
   image: ImageSourcePropType;
-  background: string;
+  background?: string;
   lastItem?: boolean;
 }
 
@@ -22,12 +22,14 @@ const BillItem: React.FC<BillItemProps> = ({
 }) => {
   return (
     <TouchableOpacity
-      // style={styles.container} 
       style={[styles.container, !lastItem && styles.border]}
       onPress={onPress}
     >
       <View
-        style={[styles.imageContainer, { backgroundColor: background }]}
+        style={[
+          styles.imageContainer,
+          { backgroundColor: background ? background : undefined }
+        ]}
       >
         <Image
           source={image}

@@ -2,13 +2,14 @@ import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Feather from 'react-native-vector-icons/Feather';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { Colors } from '../utils/colors';
-import PaymentsScreen from '../screens/PaymentsScreen';
 import HomeStackNavigator from './HomeStackNavigator';
 import MoreScreen from '../screens/MoreScreen';
 import { View } from 'react-native';
 import PaymentStackNavigator from './PaymentStackNavigator';
+import ProfileStackNavigator from './ProfileStackNavigator';
 
 const Tab = createBottomTabNavigator();
 
@@ -18,7 +19,6 @@ const MainTabNavigator = () => {
       screenOptions={({ route }) => ({
         tabBarIcon: ({ focused, color, size }) => {
           let iconName;
-
           if (route.name === 'Home') {
             iconName = 'home-variant';
             return <MaterialCommunityIcons name={iconName} size={size} color={color} />;
@@ -36,16 +36,13 @@ const MainTabNavigator = () => {
             >
               <Feather name={iconName} size={size - 10} color={color} />
             </View>;
+          } else if (route.name === 'Profile') {
+            iconName = 'person';
+            return <MaterialIcons name={iconName} size={size} color={color} />;
           }
-          // else if (route.name === 'Profile') {
-          //   iconName = 'person';
-          //   return <MaterialIcons name={iconName} size={size} color={color} />;
-          // }
-          // active color: #292D32
         },
         tabBarActiveTintColor: Colors.accent,
         tabBarInactiveTintColor: Colors.grey,
-        // tabBarInactiveTintColor: '#000A4A',
         headerShown: false,
         tabBarStyle: {
           borderTopWidth: 1,
@@ -60,7 +57,7 @@ const MainTabNavigator = () => {
       <Tab.Screen name="Home" component={HomeStackNavigator} />
       <Tab.Screen name="Payments" component={PaymentStackNavigator} />
       <Tab.Screen name="More" component={MoreScreen} />
-      {/* <Tab.Screen name="Profile" component={ProfileScreen} /> */}
+      <Tab.Screen name="Profile" component={ProfileStackNavigator} />
     </Tab.Navigator>
   );
 };
