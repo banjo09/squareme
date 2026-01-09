@@ -1,6 +1,5 @@
 import { createStackNavigator, CardStyleInterpolators } from '@react-navigation/stack';
 import Root from '../screens/Root';
-// import MainTabNavigator from './MainTabNavigator';
 import SplashScreen from '../screens/SplashScreen';
 // import LoginScreen from '../screens/LoginScreen';
 import { RootStackParamList } from '../types/navigation';
