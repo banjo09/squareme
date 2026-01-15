@@ -128,3 +128,5 @@ const AppNavigator = () => {
 };
 
 export default AppNavigator;
+
+//nj
